@@ -114,10 +114,40 @@
         this.physics.add.overlap(player, stars, collectStar, null, this);
 
         this.physics.add.collider(player, bombs, hitBomb, null, this);
+        pauseGameText = this.add
+          .text(200, 200, "Game Paused", {
+            fontFamily: "Arial",
+            fontSize: 64,
+            color: "#ffff",
+          })
+          .setVisible(false);
       }
 
       function update() {
         if (gameOver) {
+          gameOverText = this.add.text(200, 300, "GAME OVER", {
+            fontSize: "64px",
+            fill: "#000",
+          });
+          this.input.on("pointerdown", () => {
+            this.registry.destroy();
+            this.events.off();
+            this.scene.restart();
+            gameOver = false
+            gameOverText.setVisible(false);
+        });
+        }
+
+        //game pause
+        if (cursors.space.isDown) {
+          this.isPaused = !this.isPaused;
+        }
+
+        if (this.isPaused) {
+          let gamePausedText = this.add.text(200, 300, "GAME PAUSED", {
+            fontSize: "64px",
+            fill: "#000",
+          });
           return;
         }
 
